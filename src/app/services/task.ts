@@ -1,74 +1,71 @@
 import { Injectable } from '@angular/core';
+import { Task } from '../model/task'; // Importe o molde aqui também
 
-@Injectable({
-  providedIn: 'root',
-})
-export class Task {
-  id: number | undefined;
 
-  constructor() { }
+@Injectable({ 
+  providedIn: 'root'
+ })
+export class TaskService {
+
+
+  constructor() {}
 
   private tasks: Array<Task> = [];
 
   getTasks(): Array<Task> {
 
-    this.tasks = this.getFromLocalStorage();
+    this.tasks = this.getFromLocalStore();
 
     return this.tasks;
   }
 
   getById(id: number): Task | undefined {
-
+    
     const task = this.tasks.find(c => c.id === id);
 
     return task;
   }
 
   addTask(task: Task) {
+    task.id = this.tasks.length + 1;
 
     this.tasks.push(task);
 
-    //ele grava tudo no localStorage
-      this.saveToLocalstorage();
+    this.saveToLocalstorage();
   }
 
-  updateTask() {
-
-    //ele grava tudo no localStorage
-      this.saveToLocalstorage();
+  updateTask () {
+    this.saveToLocalstorage();
+    
   }
 
-  removeTask(task: Task) {
+  removeTask(task: Task) { 
     const index = this.tasks.indexOf(task);
 
     if (index !== -1) {
       //achou
       this.tasks.splice(index, 1);
 
-      //ele grava tudo no localStorage
       this.saveToLocalstorage();
     }
-
+        
   }
 
   private saveToLocalstorage() {
-
     const tasksJSON = JSON.stringify(this.tasks);
 
     localStorage.setItem('tasks', tasksJSON);
-
   }
 
-  private getFromLocalStorage(): Array<Task> {
+  private getFromLocalStore(): Array<Task> {
 
     const tasksJSON = localStorage.getItem('tasks');
 
-    if (!tasksJSON) {
-      //não achou 
-      return new Array<Task>();
-    }
+    if(!tasksJSON) {
+      //não achou
+      return new Array<Task>();      
+    }  
 
     return JSON.parse(tasksJSON);
   }
-
 }
