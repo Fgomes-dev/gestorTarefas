@@ -2,9 +2,11 @@
     <h2>{{task!.name}}</h2>
     <p class="status">Status: {{task!.completed ? 'concluída' : 'Pendente'}}</p>
 
-    </div>
+    
         <h2>Descrição</h2>
         <textarea [(ngModel)]="task!.description"></textarea>
+
+        <div class="actions">
         <button class="save-button" (click)="save()">Salvar</button>
         <button class="cancel-button" (click)="cancel()">Cancelar</button>
     <div>
